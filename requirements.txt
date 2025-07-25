@@ -1,0 +1,13 @@
+django
+djangorestframework
+django-cors-headers
+drf-yasg
+drf-nested-routers
+djangorestframework-simplejwt
+django-filter
+gunicorn
+pytest
+pytest-django
+psycopg2-binary
+Pillow
+python-dotenv
