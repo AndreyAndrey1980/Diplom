@@ -2,8 +2,10 @@ services:
   db:
     image: postgres
     restart: always
-    env_file:
-        - .env
+    environment:
+      POSTGRES_DB: ads
+      POSTGRES_USER: ads
+      POSTGRES_PASSWORD: ads1234
 
   web:
     build: .

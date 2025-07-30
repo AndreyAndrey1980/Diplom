@@ -7,10 +7,44 @@ from django.utils.encoding import force_bytes, force_str
 from rest_framework import status, permissions, viewsets, generics, filters
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 
-from .serializers import PasswordResetSerializer, PasswordResetConfirmSerializer
+from .serializers import (
+    PasswordResetSerializer,
+    PasswordResetConfirmSerializer,
+    UserRegistrationSerializer,
+    CustomTokenObtainPairSerializer
+)
 
 User = get_user_model()
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_user(request):
+    try:
+        refresh_token = request.data["refresh"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response({"detail": "Successfully logged out"}, status=200)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def register_user(request):
+    serializer = UserRegistrationSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+    return Response({'detail': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])

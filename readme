@@ -1,0 +1,16 @@
+Запуск локально:
+
+1. DEBUG=True, заполнить SECRET_KEY в .env.template
+2. Переименовать .env.template в .env.local, прописать .env.local в app/settings.py
+в аргументах load_dotenv функции
+3. Установить виртаульную среду любым удобным способом и активировать ее,
+файл requirements.txt приложен
+4. python manage.py runserver для запуска, python manage.py test для проверки тестов
+
+Запуск на проде:
+
+1. DEBUG=False, заполнить SECRET_KEY в .env.template
+2. Переименовать .env.template в .env, прописать .env в app/settings.py
+в аргументах load_dotenv функции
+3. docker compose up --build
+4. Доступ по адресу 0.0.0.0:8000
